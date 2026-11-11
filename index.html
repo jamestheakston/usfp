@@ -3,742 +3,443 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>USFP · Kandersteg 2026</title>
-
+  <meta name="description" content="USFP keeps every trip, fundraiser and form in one calm, shared workspace.">
+  <title>USFP — Make every trip count</title>
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
     :root {
-      --green: #38a878;
-      --blue: #5188dd;
-      --orange: #ee9b4e;
-      --purple: #8e77d9;
-      --ink: #17232a;
-      --muted: #7d8b8d;
-      --line: #e5ecea;
-      --background: #f7faf9;
+      --ink: #132d2b;
+      --ink-soft: #48635e;
+      --cream: #f6f7f1;
+      --paper: #fffefa;
+      --mint: #d7eee1;
+      --green: #23845c;
+      --green-dark: #176345;
+      --orange: #f3a05d;
+      --yellow: #f7d88a;
+      --blue: #a7dce0;
+      --line: rgba(19, 45, 43, 0.13);
+      --shadow: 0 24px 70px rgba(17, 56, 48, 0.14);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      background: var(--background);
       color: var(--ink);
-      font-family: Arial, sans-serif;
+      background: var(--cream);
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.5;
     }
 
-    button {
-      cursor: pointer;
-      border: 0;
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    .page {
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 85% 4%, rgba(167, 220, 224, 0.6), transparent 25rem),
+        radial-gradient(circle at -5% 34%, rgba(247, 216, 138, 0.28), transparent 24rem);
     }
 
-    .layout {
-      display: flex;
-      min-height: 100vh;
-    }
+    .container { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
 
-    aside {
-      width: 245px;
-      background: white;
-      border-right: 1px solid var(--line);
-      padding: 28px 18px;
-      position: fixed;
-      inset: 0 auto 0 0;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .logo-icon {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 9px;
-      background: #4b6ee8;
-      color: white;
-    }
-
-    .trip {
-      background: #f1f7f4;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 15px;
-      margin: 40px 0 25px;
-    }
-
-    .trip small,
-    .muted {
-      color: var(--muted);
-    }
-
-    nav {
-      display: grid;
-      gap: 7px;
-    }
-
-    nav a {
-      color: var(--muted);
-      padding: 12px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    nav a:hover,
-    nav a.active {
-      background: #eaf5f0;
-      color: #21805c;
-    }
-
-    .profile {
-      position: absolute;
-      bottom: 25px;
-      border-top: 1px solid var(--line);
-      padding-top: 18px;
-      width: calc(100% - 36px);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-      background: #c9e6d6;
-      color: #27815c;
-      border-radius: 50%;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    main {
-      width: 100%;
-      margin-left: 245px;
-    }
-
-    header {
-      height: 74px;
-      padding: 0 42px;
-      background: white;
-      border-bottom: 1px solid var(--line);
+    .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 25px 0;
     }
 
-    .actions {
-      display: flex;
+    .brand {
+      display: inline-flex;
+      align-items: center;
       gap: 10px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
     }
+
+    .brand-mark {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      color: var(--paper);
+      background: var(--ink);
+      border-radius: 11px 11px 11px 3px;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .nav-links { display: flex; gap: 30px; color: var(--ink-soft); font-size: 14px; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-actions { display: flex; align-items: center; gap: 18px; font-size: 14px; }
 
     .button {
-      padding: 10px 14px;
-      border-radius: 7px;
-      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 19px;
+      font-weight: 700;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
     }
 
-    .button.secondary {
-      background: white;
-      border: 1px solid var(--line);
-      color: var(--muted);
-    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: var(--paper); background: var(--green); box-shadow: 0 10px 24px rgba(35, 132, 92, 0.2); }
+    .button-primary:hover { background: var(--green-dark); box-shadow: 0 13px 28px rgba(35, 132, 92, 0.28); }
+    .button-quiet { color: var(--ink); background: transparent; padding-left: 0; padding-right: 0; }
+    .button-quiet:hover { color: var(--green); }
 
-    .button.primary {
-      color: white;
-      background: #4b6ee8;
-    }
+    .menu-button { display: none; border: 0; background: transparent; font-size: 23px; }
 
-    .content {
-      max-width: 1350px;
-      margin: auto;
-      padding: 42px;
-    }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: 19px;
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(440px, 1.08fr);
+      gap: 70px;
+      align-items: center;
+      min-height: 660px;
+      padding: 64px 0 96px;
     }
 
     .eyebrow {
-      color: #95a19f;
-      letter-spacing: 0.12em;
-      font-size: 10px;
-      font-weight: bold;
-    }
-
-    .welcome {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 28px;
-    }
-
-    .countdown,
-    .card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 20px;
-    }
-
-    .countdown strong {
-      display: block;
-      font-size: 28px;
-      margin: 7px 0;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .stat {
-      border-top: 3px solid var(--green);
-    }
-
-    .stat.blue {
-      border-top-color: var(--blue);
-    }
-
-    .stat.orange {
-      border-top-color: var(--orange);
-    }
-
-    .stat.purple {
-      border-top-color: var(--purple);
-    }
-
-    .stat strong {
-      display: block;
-      margin: 14px 0 8px;
-      font-size: 26px;
-    }
-
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .positive {
-      color: var(--green);
-      font-weight: bold;
-    }
-
-    .progress {
-      height: 6px;
-      margin-top: 14px;
-      background: #edf2f0;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .progress span {
-      display: block;
-      height: 100%;
-      background: var(--green);
-    }
-
-    .blue .progress span {
-      background: var(--blue);
-    }
-
-    .orange .progress span {
-      background: var(--orange);
-    }
-
-    .purple .progress span {
-      background: var(--purple);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 22px;
-    }
-
-    .fundraising {
       display: flex;
       align-items: center;
-      gap: 35px;
-    }
-
-    .donut {
-      width: 130px;
-      height: 130px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: conic-gradient(
-        var(--green) 0 54%,
-        var(--blue) 54% 85%,
-        var(--orange) 85%
-      );
-    }
-
-    .donut-inner {
-      width: 88px;
-      height: 88px;
-      display: grid;
-      place-items: center;
-      align-content: center;
-      background: white;
-      border-radius: 50%;
-      text-align: center;
-    }
-
-    .donut-inner strong {
-      font-size: 16px;
-    }
-
-    .donut-inner small {
-      color: var(--muted);
-    }
-
-    .legend {
-      display: grid;
-      gap: 14px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .legend b {
-      display: block;
-      color: var(--ink);
-      margin-top: 4px;
-    }
-
-    .tasks {
-      display: grid;
-      gap: 8px;
-    }
-
-    .task {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid #eef2f1;
-    }
-
-    .task-check {
-      width: 20px;
-      height: 20px;
-      display: grid;
-      place-items: center;
-      border: 1px solid #cbd6d2;
-      border-radius: 50%;
-    }
-
-    .task.done .task-check {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-    }
-
-    .task-content {
-      flex: 1;
-    }
-
-    .task-content small {
-      display: block;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .ledger {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    .ledger th,
-    .ledger td {
-      padding: 14px 8px;
-      border-bottom: 1px solid #eef2f1;
-      text-align: left;
-    }
-
-    .ledger th {
-      color: var(--muted);
-      font-size: 10px;
-    }
-
-    .income {
+      gap: 9px;
+      margin: 0 0 20px;
       color: var(--green);
-      font-weight: bold;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
     }
 
-    .team-progress {
-      margin-top: 25px;
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--orange); }
+
+    h1, h2, h3 { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.065em; line-height: 1.04; }
+    h1 { max-width: 610px; margin: 0; font-size: clamp(52px, 7vw, 82px); }
+    h1 em { color: var(--green); font-style: normal; }
+    .hero-copy > p:not(.eyebrow) { max-width: 490px; margin: 26px 0 32px; color: var(--ink-soft); font-size: 18px; }
+    .hero-actions { display: flex; align-items: center; gap: 25px; }
+    .hero-note { margin-top: 21px; color: #78908a; font-size: 12px; }
+
+    .product-wrap { position: relative; }
+    .product-wrap::before {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: -48px;
+      top: -56px;
+      border: 1px solid rgba(35, 132, 92, 0.18);
+      border-radius: 50%;
     }
 
-    .toast {
-      position: fixed;
-      right: 25px;
-      bottom: 25px;
-      padding: 13px 18px;
-      color: white;
-      background: #20313a;
-      border-radius: 8px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: 0.25s;
+    .product-card {
+      position: relative;
+      padding: 12px;
+      background: rgba(255, 254, 250, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      transform: rotate(1.5deg);
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .product-window { overflow: hidden; background: #f4f8f3; border: 1px solid var(--line); border-radius: 16px; }
+    .window-bar { display: flex; align-items: center; gap: 6px; padding: 13px 16px; background: var(--paper); border-bottom: 1px solid var(--line); }
+    .window-bar i { width: 7px; height: 7px; border-radius: 50%; background: #d4dfd9; }
+    .window-bar i:first-child { background: #f0ad72; }
+    .window-bar i:nth-child(2) { background: #b7dcb9; }
+    .window-title { margin-left: 9px; color: #7d918b; font-size: 10px; }
+    .window-content { display: grid; grid-template-columns: 90px 1fr; min-height: 355px; }
+    .mini-sidebar { padding: 20px 11px; background: var(--ink); }
+    .mini-logo { width: 22px; height: 22px; margin: 0 auto 29px; color: var(--ink); background: var(--yellow); border-radius: 7px 7px 7px 2px; text-align: center; font-size: 10px; font-weight: 700; line-height: 22px; }
+    .mini-nav { display: grid; gap: 13px; }
+    .mini-nav span { display: block; width: 100%; height: 5px; background: rgba(255,255,255,0.2); border-radius: 10px; }
+    .mini-nav span:first-child { background: var(--yellow); }
+    .mini-main { padding: 25px 23px; }
+    .mini-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .mini-label { color: #78908a; font-size: 9px; letter-spacing: 0.1em; }
+    .mini-heading { width: 135px; height: 11px; margin-top: 8px; background: var(--ink); border-radius: 3px; }
+    .mini-user { width: 26px; height: 26px; background: var(--mint); border-radius: 50%; }
+    .mini-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .mini-stat { padding: 12px 10px; background: var(--paper); border: 1px solid var(--line); border-radius: 9px; }
+    .mini-stat strong { display: block; margin: 7px 0 10px; font-family: "Space Grotesk"; font-size: 16px; }
+    .mini-stat span { display: block; width: 70%; height: 4px; background: var(--mint); border-radius: 10px; }
+    .mini-stat:nth-child(2) span { width: 50%; background: var(--blue); }
+    .mini-stat:nth-child(3) span { width: 83%; background: var(--orange); }
+    .mini-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 9px; margin-top: 9px; }
+    .mini-panel { min-height: 160px; padding: 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 9px; }
+    .mini-panel-title { width: 76px; height: 7px; margin-bottom: 19px; background: var(--ink); border-radius: 4px; }
+    .donut { width: 86px; height: 86px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--green) 0 62%, var(--blue) 62% 83%, var(--orange) 83%); }
+    .donut::after { content: "62%"; display: grid; width: 58px; height: 58px; place-items: center; color: var(--ink); background: var(--paper); border-radius: 50%; font-family: "Space Grotesk"; font-size: 13px; font-weight: 700; }
+    .mini-lines { display: grid; gap: 11px; }
+    .mini-line { display: flex; align-items: center; gap: 7px; }
+    .mini-line b { width: 7px; height: 7px; background: var(--green); border-radius: 50%; }
+    .mini-line:nth-child(2) b { background: var(--blue); }
+    .mini-line:nth-child(3) b { background: var(--orange); }
+    .mini-line span { width: 66%; height: 5px; background: #dfe9e2; border-radius: 5px; }
+    .floating-card { position: absolute; right: -30px; bottom: 25px; display: flex; align-items: center; gap: 10px; padding: 13px 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 13px; box-shadow: 0 15px 32px rgba(17, 56, 48, 0.13); font-size: 12px; }
+    .floating-icon { display: grid; width: 29px; height: 29px; place-items: center; color: var(--green-dark); background: var(--mint); border-radius: 9px; font-weight: 700; }
+    .floating-card strong { display: block; font-size: 13px; }
+    .floating-card small { color: var(--ink-soft); }
+
+    .proof { padding: 20px 0 55px; border-top: 1px solid var(--line); }
+    .proof-inner { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+    .proof p { margin: 0; color: var(--ink-soft); font-size: 13px; }
+    .proof-logos { display: flex; gap: 25px; color: #78908a; font-family: "Space Grotesk"; font-size: 13px; font-weight: 600; }
+
+    .section { padding: 105px 0; }
+    .section-heading { max-width: 600px; margin-bottom: 49px; }
+    .section-heading h2 { margin: 0; font-size: clamp(37px, 5vw, 58px); }
+    .section-heading p { max-width: 510px; margin: 20px 0 0; color: var(--ink-soft); font-size: 17px; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .feature { min-height: 270px; padding: 28px; background: var(--paper); border: 1px solid var(--line); border-radius: 19px; }
+    .feature:nth-child(2) { background: var(--mint); }
+    .feature:nth-child(3) { background: #fff1dc; }
+    .feature-icon { display: grid; width: 45px; height: 45px; place-items: center; margin-bottom: 42px; color: var(--paper); background: var(--ink); border-radius: 13px 13px 13px 4px; font-size: 19px; }
+    .feature:nth-child(2) .feature-icon { background: var(--green); }
+    .feature:nth-child(3) .feature-icon { background: var(--orange); }
+    .feature h3 { margin: 0 0 11px; font-size: 23px; letter-spacing: -0.045em; }
+    .feature p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+
+    .story { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 88px; align-items: center; }
+    .story-visual { position: relative; min-height: 410px; padding: 31px; background: var(--ink); border-radius: 24px; }
+    .story-visual::after { content: ""; position: absolute; width: 130px; height: 130px; right: -28px; bottom: -27px; background: var(--yellow); border-radius: 50%; }
+    .quote-mark { color: var(--yellow); font-family: Georgia, serif; font-size: 72px; line-height: 0.7; }
+    blockquote { position: relative; z-index: 1; max-width: 360px; margin: 38px 0; color: var(--paper); font-family: "Space Grotesk"; font-size: 28px; letter-spacing: -0.055em; line-height: 1.15; }
+    .quote-author { position: relative; z-index: 1; display: flex; align-items: center; gap: 11px; color: #b7cbc2; font-size: 13px; }
+    .quote-avatar { display: grid; width: 32px; height: 32px; place-items: center; color: var(--ink); background: var(--yellow); border-radius: 50%; font-size: 10px; font-weight: 700; }
+    .story-copy h2 { margin: 0; font-size: clamp(37px, 5vw, 55px); }
+    .story-copy > p { margin: 22px 0 27px; color: var(--ink-soft); font-size: 17px; }
+    .check-list { display: grid; gap: 13px; padding: 0; margin: 0; list-style: none; color: var(--ink-soft); font-size: 14px; }
+    .check-list li { display: flex; align-items: center; gap: 10px; }
+    .check-list li::before { content: "✓"; display: grid; width: 20px; height: 20px; place-items: center; color: var(--paper); background: var(--green); border-radius: 50%; font-size: 11px; font-weight: 700; }
+
+    .cta { padding: 78px 40px; margin: 0 auto 110px; color: var(--paper); background: var(--green); border-radius: 25px; text-align: center; }
+    .cta h2 { max-width: 650px; margin: 0 auto 18px; font-size: clamp(38px, 5vw, 58px); }
+    .cta p { max-width: 470px; margin: 0 auto 29px; color: #d2ebdb; }
+    .cta .button-primary { color: var(--ink); background: var(--yellow); box-shadow: none; }
+    .cta .button-primary:hover { background: #ffe3a3; }
+
+    footer { padding: 30px 0 40px; border-top: 1px solid var(--line); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; color: var(--ink-soft); font-size: 12px; }
+    .footer-links { display: flex; gap: 23px; }
+    .footer-links a:hover { color: var(--green); }
+
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 10; padding: 13px 17px; color: var(--paper); background: var(--ink); border-radius: 10px; box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); transition: 180ms ease; pointer-events: none; font-size: 13px; }
+    .toast.show { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 900px) {
-      aside {
-        display: none;
-      }
-
-      main {
-        margin-left: 0;
-      }
-
-      .stats,
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .content {
-        padding: 25px;
-      }
+      .hero { grid-template-columns: 1fr; gap: 55px; padding-top: 40px; }
+      .hero-copy { max-width: 650px; }
+      .product-wrap { max-width: 650px; margin: 0 auto; width: 100%; }
+      .story { grid-template-columns: 1fr; gap: 50px; }
+      .story-visual { min-height: 350px; }
     }
 
-    @media (max-width: 600px) {
-      header {
-        padding: 0 18px;
-      }
-
-      .content {
-        padding: 20px 15px;
-      }
-
-      .welcome {
-        display: block;
-      }
-
-      .countdown {
-        margin-top: 20px;
-      }
-
-      .stats,
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .fundraising {
-        flex-direction: column;
-      }
-
-      .actions .secondary {
-        display: none;
-      }
+    @media (max-width: 680px) {
+      .container { width: min(100% - 32px, 540px); }
+      .nav-links, .nav-actions .button-quiet { display: none; }
+      .menu-button { display: block; }
+      .nav.mobile-open .nav-links { position: absolute; left: 16px; right: 16px; top: 72px; z-index: 5; display: grid; gap: 0; padding: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 15px; box-shadow: var(--shadow); }
+      .nav.mobile-open .nav-links a { padding: 12px; }
+      .hero { min-height: auto; padding: 35px 0 75px; }
+      h1 { font-size: clamp(45px, 14vw, 68px); }
+      .hero-copy > p:not(.eyebrow) { font-size: 16px; }
+      .hero-actions { align-items: flex-start; flex-direction: column; gap: 17px; }
+      .product-card { transform: none; }
+      .window-content { grid-template-columns: 61px 1fr; }
+      .mini-main { padding: 17px 12px; }
+      .mini-sidebar { padding: 17px 8px; }
+      .mini-stats { gap: 5px; }
+      .mini-stat { padding: 9px 7px; }
+      .mini-stat strong { font-size: 13px; }
+      .mini-grid { grid-template-columns: 1fr; }
+      .mini-panel { min-height: 110px; }
+      .mini-grid .mini-panel:last-child { display: none; }
+      .floating-card { right: 10px; bottom: 13px; }
+      .proof-inner, .footer-inner { align-items: flex-start; flex-direction: column; }
+      .proof-logos { flex-wrap: wrap; gap: 14px; }
+      .section { padding: 75px 0; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature { min-height: auto; }
+      .feature-icon { margin-bottom: 28px; }
+      .cta { padding: 55px 22px; margin-bottom: 75px; }
+      .footer-links { margin-top: 15px; }
     }
   </style>
 </head>
-
 <body>
-  <div class="layout">
-    <aside>
-      <div class="logo">
-        <div class="logo-icon">U</div>
-        USFP
-      </div>
-
-      <div class="trip">
-        <small>ACTIVE TRIP</small>
-        <strong>Kandersteg 2026</strong>
-        <br>
-        <small>12–19 July · Switzerland</small>
-      </div>
-
-      <nav>
-        <a class="active" href="#overview">◈ Overview</a>
-        <a href="#fundraising">↗ Fundraising</a>
-        <a href="#plans">☷ Trip plans</a>
-        <a href="#income">£ Income & costs</a>
-        <a href="#team">♧ Scouts & team</a>
-      </nav>
-
-      <div class="profile">
-        <div class="avatar">JA</div>
-        <div>
-          <strong>Jamie Akston</strong>
-          <div class="muted">Trip coordinator</div>
+  <div class="page">
+    <header class="container">
+      <nav class="nav" id="nav">
+        <a class="brand" href="#" aria-label="USFP home">
+          <span class="brand-mark">U</span>
+          USFP
+        </a>
+        <div class="nav-links" aria-label="Main navigation">
+          <a href="#why-usfp">Why USFP</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#stories">Stories</a>
         </div>
-      </div>
-    </aside>
+        <div class="nav-actions">
+          <a class="button button-quiet" href="#sign-in">Sign in</a>
+          <a class="button button-primary" href="#get-started">Get started <span aria-hidden="true">↗</span></a>
+          <button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false">☰</button>
+        </div>
+      </nav>
+    </header>
 
     <main>
-      <header>
-        <strong>Trips / Kandersteg 2026</strong>
-
-        <div class="actions">
-          <button class="button secondary" id="shareBtn">↗ Share trip</button>
-          <button class="button primary" id="updateBtn">＋ Add update</button>
-        </div>
-      </header>
-
-      <section class="content" id="overview">
-        <div class="welcome">
-          <div>
-            <p class="eyebrow">TUESDAY, 10 NOVEMBER 2026</p>
-            <h1>Good morning, Jamie ✦</h1>
-            <p class="muted">Here’s how the Kandersteg trip is shaping up.</p>
+      <section class="container hero">
+        <div class="hero-copy">
+          <p class="eyebrow">The trip planning workspace</p>
+          <h1>Make every <em>trip</em> count.</h1>
+          <p>USFP brings your people, plans and fundraising together — so you can spend less time chasing updates and more time making memories.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#get-started">Start planning free <span aria-hidden="true">→</span></a>
+            <a class="button button-quiet" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
           </div>
-
-          <div class="countdown">
-            <small>TRIP COUNTDOWN</small>
-            <strong>244 days</strong>
-            <small>until we set off</small>
-          </div>
+          <p class="hero-note">Free for small teams · No credit card required</p>
         </div>
 
-        <div class="stats">
-          <div class="card stat">
-            <span class="muted">Fundraising progress</span>
-            <strong>£4,860</strong>
-            <div class="stat-row">
-              <span>of £8,000 target</span>
-              <span class="positive">60.8%</span>
+        <div class="product-wrap" aria-label="USFP app preview">
+          <div class="product-card">
+            <div class="product-window">
+              <div class="window-bar">
+                <i></i><i></i><i></i>
+                <span class="window-title">usfp / trips / kandersteg-2026</span>
+              </div>
+              <div class="window-content">
+                <div class="mini-sidebar">
+                  <div class="mini-logo">U</div>
+                  <div class="mini-nav"><span></span><span></span><span></span><span></span><span></span></div>
+                </div>
+                <div class="mini-main">
+                  <div class="mini-top">
+                    <div><div class="mini-label">YOUR TRIP</div><div class="mini-heading"></div></div>
+                    <div class="mini-user"></div>
+                  </div>
+                  <div class="mini-stats">
+                    <div class="mini-stat"><div class="mini-label">RAISED</div><strong>£4,860</strong><span></span></div>
+                    <div class="mini-stat"><div class="mini-label">PEOPLE</div><strong>16</strong><span></span></div>
+                    <div class="mini-stat"><div class="mini-label">READY</div><strong>72%</strong><span></span></div>
+                  </div>
+                  <div class="mini-grid">
+                    <div class="mini-panel"><div class="mini-panel-title"></div><div class="donut"></div></div>
+                    <div class="mini-panel"><div class="mini-panel-title"></div><div class="mini-lines"><div class="mini-line"><b></b><span></span></div><div class="mini-line"><b></b><span></span></div><div class="mini-line"><b></b><span></span></div></div></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="progress"><span style="width:60.8%"></span></div>
           </div>
-
-          <div class="card stat blue">
-            <span class="muted">Confirmed income</span>
-            <strong>£6,250</strong>
-            <div class="stat-row">
-              <span>8 income streams</span>
-              <span class="positive">+£1,400</span>
-            </div>
-            <div class="progress"><span style="width:75%"></span></div>
-          </div>
-
-          <div class="card stat orange">
-            <span class="muted">Trip budget</span>
-            <strong>£12,480</strong>
-            <div class="stat-row">
-              <span>planned spend</span>
-              <span>£6,230 left</span>
-            </div>
-            <div class="progress"><span style="width:50%"></span></div>
-          </div>
-
-          <div class="card stat purple">
-            <span class="muted">Planning status</span>
-            <strong>72%</strong>
-            <div class="stat-row">
-              <span>11 of 15 tasks done</span>
-              <span class="positive">On track</span>
-            </div>
-            <div class="progress"><span style="width:72%"></span></div>
-          </div>
-        </div>
-
-        <div class="grid">
-          <section class="card" id="fundraising">
-            <div class="card-header">
-              <div>
-                <p class="eyebrow">MONEY RAISED</p>
-                <h2>Fundraising overview</h2>
-              </div>
-              <span class="positive">View all ↗</span>
-            </div>
-
-            <div class="fundraising">
-              <div class="donut">
-                <div class="donut-inner">
-                  <strong>£4,860</strong>
-                  <small>raised</small>
-                </div>
-              </div>
-
-              <div class="legend">
-                <span>● Events <b>£2,640</b></span>
-                <span>● Grants <b>£1,500</b></span>
-                <span>● Individual <b>£720</b></span>
-              </div>
-            </div>
-          </section>
-
-          <section class="card" id="plans">
-            <div class="card-header">
-              <div>
-                <p class="eyebrow">UP NEXT</p>
-                <h2>Trip plans</h2>
-              </div>
-              <span class="positive">Manage ↗</span>
-            </div>
-
-            <div class="tasks">
-              <div class="task done">
-                <span class="task-check">✓</span>
-                <div class="task-content">
-                  <strong>Confirm campsite booking</strong>
-                  <small>Completed 08 Nov</small>
-                </div>
-              </div>
-
-              <div class="task done">
-                <span class="task-check">✓</span>
-                <div class="task-content">
-                  <strong>Submit grant application</strong>
-                  <small>Completed 04 Nov</small>
-                </div>
-              </div>
-
-              <div class="task">
-                <span class="task-check"></span>
-                <div class="task-content">
-                  <strong>Collect medical forms</strong>
-                  <small>Due 18 Nov · 14 remaining</small>
-                </div>
-              </div>
-
-              <div class="task">
-                <span class="task-check"></span>
-                <div class="task-content">
-                  <strong>Book group travel insurance</strong>
-                  <small>Due 25 Nov</small>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div class="grid">
-          <section class="card" id="income">
-            <div class="card-header">
-              <div>
-                <p class="eyebrow">LATEST ACTIVITY</p>
-                <h2>Income & costs</h2>
-              </div>
-              <span class="positive">Open ledger ↗</span>
-            </div>
-
-            <table class="ledger">
-              <thead>
-                <tr>
-                  <th>DESCRIPTION</th>
-                  <th>TYPE</th>
-                  <th>DATE</th>
-                  <th>AMOUNT</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Autumn quiz night</td>
-                  <td>Income</td>
-                  <td>08 Nov 2026</td>
-                  <td class="income">+£1,240</td>
-                </tr>
-                <tr>
-                  <td>Kandersteg campsite</td>
-                  <td>Cost</td>
-                  <td>06 Nov 2026</td>
-                  <td>−£1,850</td>
-                </tr>
-                <tr>
-                  <td>Local community grant</td>
-                  <td>Income</td>
-                  <td>04 Nov 2026</td>
-                  <td class="income">+£1,500</td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
-
-          <section class="card" id="team">
-            <div class="card-header">
-              <div>
-                <p class="eyebrow">THE CREW</p>
-                <h2>Scouts & team</h2>
-              </div>
-              <span class="positive">View team ↗</span>
-            </div>
-
-            <strong>16 people</strong>
-            <p class="muted">12 scouts · 4 leaders</p>
-
-            <div class="team-progress">
-              <div class="stat-row">
-                <span>Forms collected</span>
-                <strong>18 / 24</strong>
-              </div>
-              <div class="progress">
-                <span style="width:75%"></span>
-              </div>
-              <small class="muted">6 outstanding · next reminder Friday</small>
-            </div>
-          </section>
+          <div class="floating-card"><span class="floating-icon">✓</span><div><strong>Grant application</strong><small>Completed just now</small></div></div>
         </div>
       </section>
-    </main>
-  </div>
 
-  <div class="toast" id="toast"></div>
+      <section class="container proof" aria-label="USFP impact">
+        <div class="proof-inner">
+          <p>Built for the people who make great trips happen.</p>
+          <div class="proof-logos"><span>SCOUTS</span><span>GUIDES</span><span>COMMUNITY GROUPS</span><span>YOUTH TEAMS</span></div>
+        </div>
+      </section>
+
+      <section class="container section" id="why-usfp">
+        <div class="section-heading">
+          <p class="eyebrow">Everything in one place</p>
+          <h2>Less admin. More adventure.</h2>
+          <p>A shared home for the details that turn a good idea into a brilliant trip.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-icon">◒</div>
+            <h3>Fundraising, made clear.</h3>
+            <p>See what’s raised, what’s promised and what’s next — without another spreadsheet rabbit hole.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">✦</div>
+            <h3>Plans everyone can follow.</h3>
+            <p>Keep tasks, forms, dates and responsibilities moving forward with one simple shared view.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">↗</div>
+            <h3>Your team, in sync.</h3>
+            <p>Give leaders, volunteers and families the right update at the right moment. No noise required.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="container section" id="how-it-works">
+        <div class="story">
+          <div class="story-visual">
+            <div class="quote-mark">“</div>
+            <blockquote>We went from ‘who has the latest version?’ to ‘we’re ready to go.’</blockquote>
+            <div class="quote-author"><span class="quote-avatar">SR</span><span><strong>Sam Rogers</strong><br>Trip leader, 1st Northfield</span></div>
+          </div>
+          <div class="story-copy">
+            <p class="eyebrow">Made for real-world teams</p>
+            <h2>Good organisation should feel invisible.</h2>
+            <p>USFP gives you the confidence that nothing is being missed, while keeping the focus where it belongs: on the people and the experience.</p>
+            <ul class="check-list">
+              <li>One calm view of every moving part</li>
+              <li>Updates that reach the whole team</li>
+              <li>Progress you can actually see</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="container cta" id="get-started">
+        <h2>Ready to make your next trip count?</h2>
+        <p>Start with a clearer plan today. Your future self — and your whole team — will thank you.</p>
+        <a class="button button-primary" href="mailto:hello@usfp.app?subject=Get started with USFP">Create your free workspace <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+
+    <footer class="container">
+      <div class="footer-inner">
+        <a class="brand" href="#"><span class="brand-mark">U</span> USFP</a>
+        <span>Plan well. Go further.</span>
+        <div class="footer-links"><a href="#why-usfp">Features</a><a href="#how-it-works">About</a><a href="mailto:hello@usfp.app">Contact</a></div>
+      </div>
+    </footer>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
 
   <script>
+    const nav = document.getElementById("nav");
+    const menuButton = document.getElementById("menuButton");
     const toast = document.getElementById("toast");
 
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2500);
-    }
-
-    document.getElementById("updateBtn").addEventListener("click", () => {
-      showToast("Update added to Kandersteg 2026");
+    menuButton.addEventListener("click", () => {
+      const isOpen = nav.classList.toggle("mobile-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.textContent = isOpen ? "×" : "☰";
     });
 
-    document.getElementById("shareBtn").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        showToast("Trip link copied");
-      } catch {
-        showToast("Share link ready");
-      }
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("mobile-open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.textContent = "☰";
+      });
     });
 
-    document.querySelectorAll(".task:not(.done)").forEach(task => {
-      task.addEventListener("click", () => {
-        task.classList.add("done");
-        task.querySelector(".task-check").textContent = "✓";
-        task.querySelector("small").textContent = "Completed just now";
-        showToast("Task marked as complete");
+    document.querySelectorAll('a[href="#sign-in"]').forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        toast.textContent = "Sign in is coming soon.";
+        toast.classList.add("show");
+        window.setTimeout(() => toast.classList.remove("show"), 2600);
       });
     });
   </script>
