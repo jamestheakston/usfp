@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="USFP Scout app — your camps, kit and patrol progress.">
+  <title>Scout App — USFP</title>
+
+  <style>
+    :root {
+      --green: #38a878;
+      --blue: #5188dd;
+      --orange: #ee9b4e;
+      --purple: #8e77d9;
+      --ink: #17232a;
+      --muted: #7d8b8d;
+      --line: #e5ecea;
+      --background: #f7faf9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--ink);
+      font-family: Arial, sans-serif;
+    }
+
+    button { cursor: pointer; border: 0; }
+    a { color: inherit; }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    aside {
+      width: 245px;
+      background: white;
+      border-right: 1px solid var(--line);
+      padding: 28px 18px;
+      position: fixed;
+      inset: 0 auto 0 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: #4b6ee8;
+      color: white;
+    }
+    .logo-icon svg { width: 18px; height: 18px; }
+
+    .trip {
+      background: #f1f7f4;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 40px 0 25px;
+    }
+
+    .trip small, .muted { color: var(--muted); }
+
+    nav { display: grid; gap: 7px; }
+
+    nav a {
+      color: var(--muted);
+      padding: 12px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    nav a:hover, nav a.active { background: #eaf5f0; color: #21805c; }
+
+    .profile {
+      position: absolute;
+      bottom: 25px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      width: calc(100% - 36px);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      background: #c9e6d6;
+      color: #27815c;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    main { width: 100%; margin-left: 245px; }
+
+    header {
+      height: 74px;
+      padding: 0 42px;
+      background: white;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .actions { display: flex; gap: 10px; align-items: center; }
+
+    .button {
+      padding: 10px 14px;
+      border-radius: 7px;
+      font-weight: bold;
+    }
+
+    .button.secondary { background: white; border: 1px solid var(--line); color: var(--muted); }
+    .button.primary { color: white; background: #4b6ee8; }
+    .button.ghost { background: transparent; color: var(--muted); }
+
+    .content { max-width: 1350px; margin: auto; padding: 42px; }
+
+    h1 { margin: 0 0 8px; font-size: 30px; }
+    h2 { margin: 0; font-size: 19px; }
+
+    .eyebrow { color: #95a19f; letter-spacing: 0.12em; font-size: 10px; font-weight: bold; }
+
+    .welcome { display: flex; justify-content: space-between; margin-bottom: 28px; }
+
+    .countdown, .card { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+
+    .countdown strong { display: block; font-size: 28px; margin: 7px 0; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+
+    .stat { border-top: 3px solid var(--green); }
+    .stat.blue { border-top-color: var(--blue); }
+    .stat.orange { border-top-color: var(--orange); }
+    .stat.purple { border-top-color: var(--purple); }
+
+    .stat strong { display: block; margin: 14px 0 8px; font-size: 26px; }
+
+    .stat-row { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+    .positive { color: var(--green); font-weight: bold; }
+
+    .progress { height: 6px; margin-top: 14px; background: #edf2f0; border-radius: 20px; overflow: hidden; }
+    .progress span { display: block; height: 100%; background: var(--green); }
+    .blue .progress span { background: var(--blue); }
+    .orange .progress span { background: var(--orange); }
+    .purple .progress span { background: var(--purple); }
+
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 15px; margin-bottom: 15px; }
+
+    .card-header { display: flex; justify-content: space-between; margin-bottom: 22px; }
+
+    .fundraising { display: flex; align-items: center; gap: 35px; }
+
+    .donut {
+      width: 130px;
+      height: 130px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: conic-gradient(var(--green) 0 54%, var(--blue) 54% 85%, var(--orange) 85%);
+      flex-shrink: 0;
+    }
+
+    .donut-inner {
+      width: 88px;
+      height: 88px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      background: white;
+      border-radius: 50%;
+      text-align: center;
+    }
+
+    .donut-inner strong { font-size: 16px; }
+    .donut-inner small { color: var(--muted); }
+
+    .legend { display: grid; gap: 14px; color: var(--muted); font-size: 12px; }
+    .legend b { display: block; color: var(--ink); margin-top: 4px; }
+
+    .tasks { display: grid; gap: 8px; }
+
+    .task { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eef2f1; }
+
+    .task-check {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #cbd6d2;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .task.done .task-check { background: var(--green); color: white; border-color: var(--green); }
+
+    .task-content { flex: 1; }
+    .task-content small { display: block; color: var(--muted); margin-top: 4px; }
+
+    .ledger { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ledger th, .ledger td { padding: 14px 8px; border-bottom: 1px solid #eef2f1; text-align: left; }
+    .ledger th { color: var(--muted); font-size: 10px; }
+    .income { color: var(--green); font-weight: bold; }
+
+    .team-progress { margin-top: 25px; }
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      padding: 13px 18px;
+      color: white;
+      background: #20313a;
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 0.25s;
+      z-index: 10;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      aside { display: none; }
+      main { margin-left: 0; }
+      .stats, .grid { grid-template-columns: 1fr 1fr; }
+      .content { padding: 25px; }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 18px; }
+      .content { padding: 20px 15px; }
+      .welcome { display: block; }
+      .countdown { margin-top: 20px; }
+      .stats, .grid { grid-template-columns: 1fr; }
+      .fundraising { flex-direction: column; }
+      .actions .secondary { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside>
+      <div class="logo">
+        <div class="logo-icon"><i data-lucide="tent"></i></div>
+        USFP
+      </div>
+
+      <div class="trip">
+        <small>ACTIVE CAMP</small>
+        <strong>Kandersteg 2026</strong>
+        <br>
+        <small>12–19 July · Switzerland</small>
+      </div>
+
+      <nav>
+        <a class="active" href="#overview">◈ Overview</a>
+        <a href="#fundraising">↗ Fundraising</a>
+        <a href="#plans">☷ Trip plans</a>
+        <a href="#team">♧ Scouts & team</a>
+      </nav>
+
+      <div class="profile">
+        <div class="avatar" id="avatar">SC</div>
+        <div>
+          <strong id="profileName">Scout</strong>
+          <div class="muted">Patrol member</div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <strong>Camps / Kandersteg 2026</strong>
+
+        <div class="actions">
+          <button class="button ghost" id="signOutBtn">Sign out</button>
+          <button class="button secondary" id="shareBtn">↗ Share camp</button>
+          <button class="button primary" id="updateBtn">＋ Add update</button>
+        </div>
+      </header>
+
+      <section class="content" id="overview">
+        <div class="welcome">
+          <div>
+            <p class="eyebrow" id="todayLine">TODAY</p>
+            <h1 id="greeting">Good morning</h1>
+            <p class="muted">Here’s how the Kandersteg camp is shaping up.</p>
+          </div>
+
+          <div class="countdown">
+            <small>CAMP COUNTDOWN</small>
+            <strong id="countdownDays">—</strong>
+            <small>until we set off</small>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="card stat">
+            <span class="muted">Fundraising progress</span>
+            <strong>£4,860</strong>
+            <div class="stat-row">
+              <span>of £8,000 target</span>
+              <span class="positive">60.8%</span>
+            </div>
+            <div class="progress"><span style="width:60.8%"></span></div>
+          </div>
+
+          <div class="card stat blue">
+            <span class="muted">Your kit list</span>
+            <strong>9 / 12</strong>
+            <div class="stat-row">
+              <span>items packed</span>
+              <span class="positive">On track</span>
+            </div>
+            <div class="progress"><span style="width:75%"></span></div>
+          </div>
+
+          <div class="card stat orange">
+            <span class="muted">Camp countdown</span>
+            <strong id="countdownStat">—</strong>
+            <div class="stat-row">
+              <span>days to departure</span>
+              <span>12–19 July</span>
+            </div>
+            <div class="progress"><span style="width:30%"></span></div>
+          </div>
+
+          <div class="card stat purple">
+            <span class="muted">Planning status</span>
+            <strong>72%</strong>
+            <div class="stat-row">
+              <span>11 of 15 tasks done</span>
+              <span class="positive">On track</span>
+            </div>
+            <div class="progress"><span style="width:72%"></span></div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <section class="card" id="fundraising">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">MONEY RAISED</p>
+                <h2>Fundraising overview</h2>
+              </div>
+              <span class="positive">View all ↗</span>
+            </div>
+
+            <div class="fundraising">
+              <div class="donut">
+                <div class="donut-inner">
+                  <strong>£4,860</strong>
+                  <small>raised</small>
+                </div>
+              </div>
+
+              <div class="legend">
+                <span>● Events <b>£2,640</b></span>
+                <span>● Grants <b>£1,500</b></span>
+                <span>● Individual <b>£720</b></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card" id="plans">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">UP NEXT</p>
+                <h2>Camp plans</h2>
+              </div>
+              <span class="positive">Manage ↗</span>
+            </div>
+
+            <div class="tasks">
+              <div class="task done">
+                <span class="task-check">✓</span>
+                <div class="task-content">
+                  <strong>Confirm campsite booking</strong>
+                  <small>Completed 08 Nov</small>
+                </div>
+              </div>
+
+              <div class="task done">
+                <span class="task-check">✓</span>
+                <div class="task-content">
+                  <strong>Submit grant application</strong>
+                  <small>Completed 04 Nov</small>
+                </div>
+              </div>
+
+              <div class="task">
+                <span class="task-check"></span>
+                <div class="task-content">
+                  <strong>Collect medical forms</strong>
+                  <small>Due 18 Nov · 14 remaining</small>
+                </div>
+              </div>
+
+              <div class="task">
+                <span class="task-check"></span>
+                <div class="task-content">
+                  <strong>Book group travel insurance</strong>
+                  <small>Due 25 Nov</small>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="grid">
+          <section class="card" id="kit">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">PACKING</p>
+                <h2>Your kit list</h2>
+              </div>
+              <span class="positive">Open list ↗</span>
+            </div>
+
+            <table class="ledger">
+              <thead>
+                <tr>
+                  <th>ITEM</th>
+                  <th>STATUS</th>
+                  <th>OWNER</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sleeping bag & mat</td>
+                  <td>Packed</td>
+                  <td>You</td>
+                </tr>
+                <tr>
+                  <td>Waterproof jacket</td>
+                  <td>Packed</td>
+                  <td>You</td>
+                </tr>
+                <tr>
+                  <td>Head torch + batteries</td>
+                  <td>Still needed</td>
+                  <td>You</td>
+                </tr>
+                <tr>
+                  <td>First aid kit</td>
+                  <td>Packed</td>
+                  <td>Leader</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="card" id="team">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">THE CREW</p>
+                <h2>Scouts & team</h2>
+              </div>
+              <span class="positive">View team ↗</span>
+            </div>
+
+            <strong>16 people</strong>
+            <p class="muted">12 scouts · 4 leaders</p>
+
+            <div class="team-progress">
+              <div class="stat-row">
+                <span>Forms collected</span>
+                <strong>18 / 24</strong>
+              </div>
+              <div class="progress">
+                <span style="width:75%"></span>
+              </div>
+              <small class="muted">6 outstanding · next reminder Friday</small>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    lucide.createIcons();
+
+    const SUPABASE_URL = "https://sqindmcruywdzpvmawtp.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_O82tJ5AlfI51jS-xPpnBEg_8I93kNvX";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const REQUIRED_ROLE = "scout";
+
+    const toast = document.getElementById("toast");
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function accountType(user) {
+      const meta = user.user_metadata || {};
+      return meta.account_type || meta.role || null;
+    }
+
+    function firstName(user) {
+      const meta = user.user_metadata || {};
+      const name = meta.full_name || meta.name || "";
+      return name ? name.split(" ")[0] : user.email.split("@")[0];
+    }
+
+    function initials(name) {
+      return name.split(/\s+/).map(p => p[0]).join("").slice(0, 2).toUpperCase();
+    }
+
+    async function init() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.location.href = "../../login.html";
+        return;
+      }
+
+      const type = accountType(session.user);
+      if (!type) {
+        window.location.href = "../../onboarding.html";
+        return;
+      }
+      if (type !== REQUIRED_ROLE) {
+        window.location.href = `/${type}/app`;
+        return;
+      }
+
+      const name = firstName(session.user);
+      document.getElementById("greeting").textContent = `Good day, ${name} ✦`;
+      document.getElementById("profileName").textContent = name;
+      document.getElementById("avatar").textContent = initials(name);
+
+      const departure = new Date("2026-07-12T00:00:00");
+      const days = Math.max(0, Math.ceil((departure - new Date()) / 86400000));
+      document.getElementById("countdownDays").textContent = `${days} days`;
+      document.getElementById("countdownStat").textContent = `${days}`;
+
+      const now = new Date();
+      document.getElementById("todayLine").textContent = now.toLocaleDateString("en-GB", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric",
+      }).toUpperCase();
+    }
+
+    document.getElementById("updateBtn").addEventListener("click", () => {
+      showToast("Update added to Kandersteg 2026");
+    });
+
+    document.getElementById("shareBtn").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast("Camp link copied");
+      } catch {
+        showToast("Share link ready");
+      }
+    });
+
+    document.getElementById("signOutBtn").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = "../../login.html";
+    });
+
+    document.querySelectorAll(".task:not(.done)").forEach(task => {
+      task.addEventListener("click", () => {
+        task.classList.add("done");
+        task.querySelector(".task-check").textContent = "✓";
+        task.querySelector("small").textContent = "Completed just now";
+        showToast("Task marked as complete");
+      });
+    });
+
+    init();
+  </script>
+</body>
+</html>

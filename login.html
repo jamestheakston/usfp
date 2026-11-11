@@ -184,7 +184,7 @@
 
     const SUPABASE_URL = "https://sqindmcruywdzpvmawtp.supabase.co";
     const SUPABASE_KEY = "sb_publishable_O82tJ5AlfI51jS-xPpnBEg_8I93kNvX";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const form = document.getElementById("loginForm");
     const toast = document.getElementById("toast");
@@ -201,7 +201,7 @@
       submitButton.disabled = true;
       submitButton.textContent = "Signing in…";
 
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: form.email.value.trim(),
         password: form.password.value,
       });
@@ -213,8 +213,9 @@
         return;
       }
 
-      showToast("Signed in — welcome back.");
-      window.setTimeout(() => { window.location.href = "app.html"; }, 900);
+      const meta = data.user.user_metadata || {};
+      const accountType = meta.account_type || meta.role;
+      window.location.href = accountType ? `/${accountType}/app` : "onboarding.html";
     });
   </script>
 </body>
