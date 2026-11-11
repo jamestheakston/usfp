@@ -178,17 +178,43 @@
   <div class="toast" id="toast" role="status"></div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     lucide.createIcons();
 
+    const SUPABASE_URL = "https://sqindmcruywdzpvmawtp.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_O82tJ5AlfI51jS-xPpnBEg_8I93kNvX";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const form = document.getElementById("loginForm");
     const toast = document.getElementById("toast");
+    const submitButton = form.querySelector("button[type=submit]");
 
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      toast.textContent = "Sign-in is coming soon — check back shortly.";
+    function showToast(message) {
+      toast.textContent = message;
       toast.classList.add("show");
-      window.setTimeout(() => toast.classList.remove("show"), 2600);
+      window.setTimeout(() => toast.classList.remove("show"), 3200);
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      submitButton.textContent = "Signing in…";
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email: form.email.value.trim(),
+        password: form.password.value,
+      });
+
+      if (error) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Sign in";
+        showToast(error.message);
+        return;
+      }
+
+      showToast("Signed in — welcome back.");
+      window.setTimeout(() => { window.location.href = "app.html"; }, 900);
     });
   </script>
 </body>

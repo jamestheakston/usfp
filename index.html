@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="USFP keeps every overseas Scout camp, fundraiser and form in one calm, shared workspace — built for camps abroad.">
-  <title>USFP — Make it to Kandersteg</title>
+  <title>USFP — Make memories forever</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
 
@@ -239,15 +239,6 @@
     .feature-icon svg { width: 22px; height: 22px; }
     .button svg { width: 15px; height: 15px; }
 
-    .roll-word {
-      display: inline-block;
-      overflow: hidden;
-      height: var(--roll-h, 1.05em);
-      vertical-align: text-bottom;
-    }
-    .roll-inner { display: block; transition: transform 650ms cubic-bezier(0.22, 0.8, 0.24, 1); }
-    .roll-inner > span { display: block; height: var(--roll-h, 1.05em); line-height: var(--roll-h, 1.05em); }
-
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; gap: 55px; padding-top: 40px; }
       .hero-copy { max-width: 650px; }
@@ -312,7 +303,7 @@
       <section class="container hero">
         <div class="hero-copy">
           <p class="eyebrow">Scout camps, abroad</p>
-          <h1>Make it to <em class="roll-word"><span class="roll-inner" id="rollInner"><span>Kandersteg.</span><span>Florida.</span><span>Spain.</span><span>Italy.</span><span>France.</span></span></em></h1>
+          <h1>Make <em>memories</em> forever.</h1>
           <p>USFP keeps every overseas camp — forms, flights, funds and fun — in one calm, shared workspace, so leaders spend less time chasing paperwork and more time packing rucksacks.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="/login.html">Sign in <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
@@ -425,25 +416,6 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
     lucide.createIcons();
-
-    const rollWord = document.querySelector(".roll-word");
-    const rollInner = document.getElementById("rollInner");
-    const rollWords = rollInner.querySelectorAll("span");
-    const rollStep = rollWords[0].getBoundingClientRect().height;
-    rollWord.style.setProperty("--roll-h", `${rollStep}px`);
-    let rollIndex = 0;
-
-    window.setInterval(() => {
-      rollIndex = (rollIndex + 1) % rollWords.length;
-      if (rollIndex === 0) {
-        rollInner.style.transition = "none";
-        rollInner.style.transform = "translateY(0)";
-        void rollInner.offsetWidth;
-        rollInner.style.transition = "";
-      } else {
-        rollInner.style.transform = `translateY(${-rollIndex * rollStep}px)`;
-      }
-    }, 2800);
 
     const nav = document.getElementById("nav");
     const menuButton = document.getElementById("menuButton");
