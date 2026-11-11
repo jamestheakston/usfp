@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sign in to USFP — the workspace for overseas Scout camps.">
+  <title>Sign in — USFP</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+    :root {
+      --ink: #132d2b;
+      --ink-soft: #48635e;
+      --cream: #f6f7f1;
+      --paper: #fffefa;
+      --mint: #d7eee1;
+      --green: #23845c;
+      --green-dark: #176345;
+      --orange: #f3a05d;
+      --line: rgba(19, 45, 43, 0.13);
+      --shadow: 0 24px 70px rgba(17, 56, 48, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 85% 4%, rgba(167, 220, 224, 0.6), transparent 25rem),
+        radial-gradient(circle at -5% 34%, rgba(247, 216, 138, 0.28), transparent 24rem),
+        var(--cream);
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .login-card {
+      width: min(420px, 100%);
+      padding: 38px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 34px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      color: var(--paper);
+      background: var(--ink);
+      border-radius: 11px 11px 11px 3px;
+    }
+    .brand-mark svg { width: 16px; height: 16px; }
+
+    h1 {
+      margin: 0 0 8px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+      letter-spacing: -0.05em;
+      line-height: 1.1;
+    }
+
+    .login-card > p {
+      margin: 0 0 26px;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    form { display: grid; gap: 15px; }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      color: var(--ink);
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font: inherit;
+      font-size: 15px;
+    }
+    input:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 7px;
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 19px;
+      color: var(--paper);
+      background: var(--green);
+      box-shadow: 0 10px 24px rgba(35, 132, 92, 0.2);
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+    .button:hover { transform: translateY(-2px); background: var(--green-dark); }
+    .button svg { width: 15px; height: 15px; }
+
+    .login-note {
+      margin: 22px 0 0;
+      color: #78908a;
+      font-size: 12px;
+      text-align: center;
+    }
+    .login-note a:hover { color: var(--green); }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 10;
+      padding: 13px 17px;
+      color: var(--paper);
+      background: var(--ink);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 180ms ease;
+      pointer-events: none;
+      font-size: 13px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 480px) {
+      .login-card { padding: 30px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-card">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><i data-lucide="tent"></i></span>
+      USFP
+    </a>
+    <h1>Welcome back</h1>
+    <p>Sign in to plan your next overseas Scout camp.</p>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required>
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+      <button class="button" type="submit">Sign in <i data-lucide="arrow-up-right"></i></button>
+    </form>
+    <p class="login-note">USFP is invite-only. Need access? <a href="index.html#get-started">Request an invite</a></p>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    const form = document.getElementById("loginForm");
+    const toast = document.getElementById("toast");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      toast.textContent = "Sign-in is coming soon — check back shortly.";
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 2600);
+    });
+  </script>
+</body>
+</html>

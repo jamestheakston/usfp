@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="USFP keeps every trip, fundraiser and form in one calm, shared workspace.">
-  <title>USFP — Make every trip count</title>
+  <meta name="description" content="USFP keeps every overseas Scout camp, fundraiser and form in one calm, shared workspace — built for camps abroad.">
+  <title>USFP — Make it to Kandersteg</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
 
@@ -235,8 +235,18 @@
     .footer-links { display: flex; gap: 23px; }
     .footer-links a:hover { color: var(--green); }
 
-    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 10; padding: 13px 17px; color: var(--paper); background: var(--ink); border-radius: 10px; box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); transition: 180ms ease; pointer-events: none; font-size: 13px; }
-    .toast.show { opacity: 1; transform: translateY(0); }
+    .brand-mark svg, .floating-icon svg, .mini-logo svg { width: 16px; height: 16px; }
+    .feature-icon svg { width: 22px; height: 22px; }
+    .button svg { width: 15px; height: 15px; }
+
+    .roll-word {
+      display: inline-block;
+      overflow: hidden;
+      height: var(--roll-h, 1.05em);
+      vertical-align: text-bottom;
+    }
+    .roll-inner { display: block; transition: transform 650ms cubic-bezier(0.22, 0.8, 0.24, 1); }
+    .roll-inner > span { display: block; height: var(--roll-h, 1.05em); line-height: var(--roll-h, 1.05em); }
 
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; gap: 55px; padding-top: 40px; }
@@ -282,8 +292,8 @@
   <div class="page">
     <header class="container">
       <nav class="nav" id="nav">
-        <a class="brand" href="#" aria-label="USFP home">
-          <span class="brand-mark">U</span>
+        <a class="brand" href="#" aria-label="USFP home for Scout camps abroad">
+          <span class="brand-mark"><i data-lucide="tent"></i></span>
           USFP
         </a>
         <div class="nav-links" aria-label="Main navigation">
@@ -292,8 +302,7 @@
           <a href="#stories">Stories</a>
         </div>
         <div class="nav-actions">
-          <a class="button button-quiet" href="#sign-in">Sign in</a>
-          <a class="button button-primary" href="#get-started">Get started <span aria-hidden="true">↗</span></a>
+          <a class="button button-primary" href="/login.html">Sign in <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
           <button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false">☰</button>
         </div>
       </nav>
@@ -302,14 +311,14 @@
     <main>
       <section class="container hero">
         <div class="hero-copy">
-          <p class="eyebrow">The trip planning workspace</p>
-          <h1>Make every <em>trip</em> count.</h1>
-          <p>USFP brings your people, plans and fundraising together — so you can spend less time chasing updates and more time making memories.</p>
+          <p class="eyebrow">Scout camps, abroad</p>
+          <h1>Make it to <em class="roll-word"><span class="roll-inner" id="rollInner"><span>Kandersteg.</span><span>Florida.</span><span>Spain.</span><span>Italy.</span><span>France.</span></span></em></h1>
+          <p>USFP keeps every overseas camp — forms, flights, funds and fun — in one calm, shared workspace, so leaders spend less time chasing paperwork and more time packing rucksacks.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#get-started">Start planning free <span aria-hidden="true">→</span></a>
-            <a class="button button-quiet" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+            <a class="button button-primary" href="/login.html">Sign in <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+            <a class="button button-quiet" href="#how-it-works">See how it works <i data-lucide="arrow-down" aria-hidden="true"></i></a>
           </div>
-          <p class="hero-note">Free for small teams · No credit card required</p>
+          <p class="hero-note">Invite-only for Scout groups right now</p>
         </div>
 
         <div class="product-wrap" aria-label="USFP app preview">
@@ -317,21 +326,21 @@
             <div class="product-window">
               <div class="window-bar">
                 <i></i><i></i><i></i>
-                <span class="window-title">usfp / trips / kandersteg-2026</span>
+                <span class="window-title">usfp / camps / kandersteg-2026</span>
               </div>
               <div class="window-content">
                 <div class="mini-sidebar">
-                  <div class="mini-logo">U</div>
+                  <div class="mini-logo"><i data-lucide="tent"></i></div>
                   <div class="mini-nav"><span></span><span></span><span></span><span></span><span></span></div>
                 </div>
                 <div class="mini-main">
                   <div class="mini-top">
-                    <div><div class="mini-label">YOUR TRIP</div><div class="mini-heading"></div></div>
+                    <div><div class="mini-label">YOUR CAMP</div><div class="mini-heading"></div></div>
                     <div class="mini-user"></div>
                   </div>
                   <div class="mini-stats">
                     <div class="mini-stat"><div class="mini-label">RAISED</div><strong>£4,860</strong><span></span></div>
-                    <div class="mini-stat"><div class="mini-label">PEOPLE</div><strong>16</strong><span></span></div>
+                    <div class="mini-stat"><div class="mini-label">CAMPERS</div><strong>24</strong><span></span></div>
                     <div class="mini-stat"><div class="mini-label">READY</div><strong>72%</strong><span></span></div>
                   </div>
                   <div class="mini-grid">
@@ -342,38 +351,38 @@
               </div>
             </div>
           </div>
-          <div class="floating-card"><span class="floating-icon">✓</span><div><strong>Grant application</strong><small>Completed just now</small></div></div>
+          <div class="floating-card"><span class="floating-icon"><i data-lucide="badge-check"></i></span><div><strong>Camp booking confirmed</strong><small>Deposit paid just now</small></div></div>
         </div>
       </section>
 
       <section class="container proof" aria-label="USFP impact">
         <div class="proof-inner">
-          <p>Built for the people who make great trips happen.</p>
-          <div class="proof-logos"><span>SCOUTS</span><span>GUIDES</span><span>COMMUNITY GROUPS</span><span>YOUTH TEAMS</span></div>
+          <p>Built for the leaders who take Scouts overseas.</p>
+          <div class="proof-logos"><span>KANDERSTEG</span><span>SCOUT CAMPS ABROAD</span><span>PACK LEADERS</span><span>GROUP SCOUT LEADERS</span></div>
         </div>
       </section>
 
       <section class="container section" id="why-usfp">
         <div class="section-heading">
           <p class="eyebrow">Everything in one place</p>
-          <h2>Less admin. More adventure.</h2>
-          <p>A shared home for the details that turn a good idea into a brilliant trip.</p>
+          <h2>Less admin. More campfire.</h2>
+          <p>A shared home for every overseas camp — from funding the adventure to counting heads at the airport.</p>
         </div>
         <div class="feature-grid">
           <article class="feature">
-            <div class="feature-icon">◒</div>
+            <div class="feature-icon"><i data-lucide="piggy-bank"></i></div>
             <h3>Fundraising, made clear.</h3>
-            <p>See what’s raised, what’s promised and what’s next — without another spreadsheet rabbit hole.</p>
+            <p>See what each patrol has raised for camp fees, kit and flights — without another spreadsheet rabbit hole.</p>
           </article>
           <article class="feature">
-            <div class="feature-icon">✦</div>
-            <h3>Plans everyone can follow.</h3>
-            <p>Keep tasks, forms, dates and responsibilities moving forward with one simple shared view.</p>
+            <div class="feature-icon"><i data-lucide="clipboard-list"></i></div>
+            <h3>Forms, flights and fees.</h3>
+            <p>Keep consent forms, passport checks, kit lists and leader rotas moving forward in one shared view.</p>
           </article>
           <article class="feature">
-            <div class="feature-icon">↗</div>
-            <h3>Your team, in sync.</h3>
-            <p>Give leaders, volunteers and families the right update at the right moment. No noise required.</p>
+            <div class="feature-icon"><i data-lucide="users"></i></div>
+            <h3>Your section, in sync.</h3>
+            <p>Give Scout leaders, parents and Scouts the right update at the right moment. No noise required.</p>
           </article>
         </div>
       </section>
@@ -382,16 +391,16 @@
         <div class="story">
           <div class="story-visual">
             <div class="quote-mark">“</div>
-            <blockquote>We went from ‘who has the latest version?’ to ‘we’re ready to go.’</blockquote>
-            <div class="quote-author"><span class="quote-avatar">SR</span><span><strong>Sam Rogers</strong><br>Trip leader, 1st Northfield</span></div>
+            <blockquote>We went from ‘who has the latest version?’ to ‘we’re ready for Kandersteg.’</blockquote>
+            <div class="quote-author"><span class="quote-avatar">SR</span><span><strong>Sam Rogers</strong><br>Group Scout Leader, 1st Northfield</span></div>
           </div>
           <div class="story-copy">
-            <p class="eyebrow">Made for real-world teams</p>
+            <p class="eyebrow">Made for Scout camps abroad</p>
             <h2>Good organisation should feel invisible.</h2>
-            <p>USFP gives you the confidence that nothing is being missed, while keeping the focus where it belongs: on the people and the experience.</p>
+            <p>USFP gives you the confidence that nothing is being missed — from permission slips to passport checks — while keeping the focus where it belongs: on the campfire.</p>
             <ul class="check-list">
-              <li>One calm view of every moving part</li>
-              <li>Updates that reach the whole team</li>
+              <li>One calm view of every form and flight</li>
+              <li>Updates that reach leaders, parents and Scouts</li>
               <li>Progress you can actually see</li>
             </ul>
           </div>
@@ -399,26 +408,45 @@
       </section>
 
       <section class="container cta" id="get-started">
-        <h2>Ready to make your next trip count?</h2>
-        <p>Start with a clearer plan today. Your future self — and your whole team — will thank you.</p>
-        <a class="button button-primary" href="mailto:hello@usfp.app?subject=Get started with USFP">Create your free workspace <span aria-hidden="true">↗</span></a>
+        <h2>USFP is invite-only for now.</h2>
+        <p>We’re onboarding Scout groups in small batches. Request an invite and we’ll be in touch when a space opens up.</p>
+        <a class="button button-primary" href="mailto:hello@usfp.app?subject=Request%20an%20invite%20to%20USFP">Request an invite <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
       </section>
     </main>
 
     <footer class="container">
       <div class="footer-inner">
-        <a class="brand" href="#"><span class="brand-mark">U</span> USFP</a>
-        <span>Plan well. Go further.</span>
+        <a class="brand" href="#"><span class="brand-mark"><i data-lucide="tent"></i></span> USFP for Scout Camps</a>
+        <span>Adventure well. Lead further.</span>
         <div class="footer-links"><a href="#why-usfp">Features</a><a href="#how-it-works">About</a><a href="mailto:hello@usfp.app">Contact</a></div>
       </div>
     </footer>
   </div>
-  <div class="toast" id="toast" role="status"></div>
-
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
+    lucide.createIcons();
+
+    const rollWord = document.querySelector(".roll-word");
+    const rollInner = document.getElementById("rollInner");
+    const rollWords = rollInner.querySelectorAll("span");
+    const rollStep = rollWords[0].getBoundingClientRect().height;
+    rollWord.style.setProperty("--roll-h", `${rollStep}px`);
+    let rollIndex = 0;
+
+    window.setInterval(() => {
+      rollIndex = (rollIndex + 1) % rollWords.length;
+      if (rollIndex === 0) {
+        rollInner.style.transition = "none";
+        rollInner.style.transform = "translateY(0)";
+        void rollInner.offsetWidth;
+        rollInner.style.transition = "";
+      } else {
+        rollInner.style.transform = `translateY(${-rollIndex * rollStep}px)`;
+      }
+    }, 2800);
+
     const nav = document.getElementById("nav");
     const menuButton = document.getElementById("menuButton");
-    const toast = document.getElementById("toast");
 
     menuButton.addEventListener("click", () => {
       const isOpen = nav.classList.toggle("mobile-open");
@@ -431,15 +459,6 @@
         nav.classList.remove("mobile-open");
         menuButton.setAttribute("aria-expanded", "false");
         menuButton.textContent = "☰";
-      });
-    });
-
-    document.querySelectorAll('a[href="#sign-in"]').forEach((link) => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        toast.textContent = "Sign in is coming soon.";
-        toast.classList.add("show");
-        window.setTimeout(() => toast.classList.remove("show"), 2600);
       });
     });
   </script>
