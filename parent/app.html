@@ -5,250 +5,329 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="USFP Parent app — follow your Scout’s camps, forms and fundraising.">
   <title>Parent App — USFP</title>
-
   <style>
+    @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
     :root {
-      --green: #38a878;
-      --blue: #5188dd;
-      --orange: #ee9b4e;
-      --purple: #8e77d9;
-      --ink: #17232a;
-      --muted: #7d8b8d;
-      --line: #e5ecea;
-      --background: #f7faf9;
+      --ink: #132d2b;
+      --ink-soft: #48635e;
+      --cream: #f6f7f1;
+      --paper: #fffefa;
+      --mint: #d7eee1;
+      --green: #23845c;
+      --green-dark: #176345;
+      --orange: #f3a05d;
+      --yellow: #f7d88a;
+      --blue: #a7dce0;
+      --line: rgba(19, 45, 43, 0.13);
+      --shadow: 0 24px 70px rgba(17, 56, 48, 0.14);
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      background: var(--background);
       color: var(--ink);
-      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at 85% 4%, rgba(167, 220, 224, 0.6), transparent 25rem),
+        radial-gradient(circle at -5% 34%, rgba(247, 216, 138, 0.28), transparent 24rem),
+        var(--cream);
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.5;
     }
-
-    button { cursor: pointer; border: 0; }
-    a { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
 
     .layout { display: flex; min-height: 100vh; }
 
     aside {
-      width: 245px;
-      background: white;
+      width: 250px;
+      flex-shrink: 0;
+      background: var(--paper);
       border-right: 1px solid var(--line);
-      padding: 28px 18px;
+      padding: 26px 18px;
       position: fixed;
       inset: 0 auto 0 0;
+      display: flex;
+      flex-direction: column;
     }
 
-    .logo {
-      display: flex;
+    .brand {
+      display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-size: 20px;
-      font-weight: bold;
+      padding: 0 8px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
     }
-
-    .logo-icon {
+    .brand-mark {
+      display: grid;
       width: 34px;
       height: 34px;
-      display: grid;
       place-items: center;
-      border-radius: 9px;
-      background: #4b6ee8;
-      color: white;
+      color: var(--paper);
+      background: var(--ink);
+      border-radius: 10px 10px 10px 3px;
     }
-    .logo-icon svg { width: 18px; height: 18px; }
+    .brand-mark svg { width: 16px; height: 16px; }
 
-    .trip {
-      background: #f1f7f4;
-      border: 1px solid var(--line);
-      border-radius: 10px;
+    .camp-card {
+      margin: 34px 0 22px;
       padding: 15px;
-      margin: 40px 0 25px;
+      background: var(--mint);
+      border: 1px solid var(--line);
+      border-radius: 14px;
     }
+    .camp-card small { display: block; color: var(--green-dark); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+    .camp-card strong { display: block; margin-top: 5px; font-family: "Space Grotesk", sans-serif; font-size: 16px; letter-spacing: -0.03em; }
+    .camp-card span { color: var(--ink-soft); font-size: 12px; }
 
-    .trip small, .muted { color: var(--muted); }
+    .side-label { padding: 0 8px 10px; color: #93a39d; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
 
-    nav { display: grid; gap: 7px; }
-
+    nav { display: grid; gap: 5px; }
     nav a {
-      color: var(--muted);
-      padding: 12px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 12px;
+      color: var(--ink-soft);
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 600;
     }
-
-    nav a:hover, nav a.active { background: #eaf5f0; color: #21805c; }
+    nav a svg { width: 17px; height: 17px; flex-shrink: 0; }
+    nav a:hover { background: var(--cream); color: var(--ink); }
+    nav a.active { background: var(--mint); color: var(--green-dark); }
 
     .profile {
-      position: absolute;
-      bottom: 25px;
-      border-top: 1px solid var(--line);
-      padding-top: 18px;
-      width: calc(100% - 36px);
+      margin-top: auto;
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 11px;
+      padding: 14px 8px 0;
+      border-top: 1px solid var(--line);
     }
-
     .avatar {
-      width: 32px;
-      height: 32px;
       display: grid;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
       place-items: center;
-      background: #c9e6d6;
-      color: #27815c;
+      color: var(--paper);
+      background: var(--green);
       border-radius: 50%;
-      font-size: 11px;
-      font-weight: bold;
+      font-size: 12px;
+      font-weight: 700;
     }
+    .profile strong { display: block; font-size: 13px; }
+    .profile span { color: var(--ink-soft); font-size: 11px; }
 
-    main { width: 100%; margin-left: 245px; }
+    main { flex: 1; margin-left: 250px; min-width: 0; }
 
-    header {
-      height: 74px;
-      padding: 0 42px;
-      background: white;
-      border-bottom: 1px solid var(--line);
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 16px;
+      padding: 22px clamp(20px, 4vw, 44px);
     }
-
-    .actions { display: flex; gap: 10px; align-items: center; }
+    .topbar .crumb { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+    .topbar .crumb b { color: var(--ink); }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
 
     .button {
-      padding: 10px 14px;
-      border-radius: 7px;
-      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease;
     }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: var(--paper); background: var(--green); box-shadow: 0 10px 24px rgba(35, 132, 92, 0.2); }
+    .button-primary:hover { background: var(--green-dark); }
+    .button-secondary { color: var(--ink); background: var(--paper); border: 1px solid var(--line); }
+    .button-ghost { color: var(--ink-soft); background: transparent; padding-left: 4px; padding-right: 4px; }
+    .button-ghost:hover { color: var(--green); }
+    .button svg { width: 15px; height: 15px; }
 
-    .button.secondary { background: white; border: 1px solid var(--line); color: var(--muted); }
-    .button.primary { color: white; background: #4b6ee8; }
-    .button.ghost { background: transparent; color: var(--muted); }
+    .content { max-width: 1180px; margin: 0 auto; padding: 10px clamp(20px, 4vw, 44px) 70px; }
 
-    .content { max-width: 1350px; margin: auto; padding: 42px; }
+    .welcome { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin: 8px 0 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: "Space Grotesk", sans-serif; font-size: clamp(30px, 3.6vw, 42px); letter-spacing: -0.05em; line-height: 1.05; }
+    .welcome p { margin: 10px 0 0; color: var(--ink-soft); font-size: 15px; }
 
-    h1 { margin: 0 0 8px; font-size: 30px; }
-    h2 { margin: 0; font-size: 19px; }
+    .countdown {
+      flex-shrink: 0;
+      padding: 18px 24px;
+      text-align: center;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 18px;
+    }
+    .countdown small { display: block; color: #b7cbc2; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+    .countdown strong { display: block; margin: 4px 0; font-family: "Space Grotesk", sans-serif; font-size: 30px; letter-spacing: -0.04em; }
+    .countdown span { color: #b7cbc2; font-size: 11px; }
 
-    .eyebrow { color: #95a19f; letter-spacing: 0.12em; font-size: 10px; font-weight: bold; }
-
-    .welcome { display: flex; justify-content: space-between; margin-bottom: 28px; }
-
-    .countdown, .card { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
-
-    .countdown strong { display: block; font-size: 28px; margin: 7px 0; }
-
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-
-    .stat { border-top: 3px solid var(--green); }
-    .stat.blue { border-top-color: var(--blue); }
-    .stat.orange { border-top-color: var(--orange); }
-    .stat.purple { border-top-color: var(--purple); }
-
-    .stat strong { display: block; margin: 14px 0 8px; font-size: 26px; }
-
-    .stat-row { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
-    .positive { color: var(--green); font-weight: bold; }
-
-    .progress { height: 6px; margin-top: 14px; background: #edf2f0; border-radius: 20px; overflow: hidden; }
-    .progress span { display: block; height: 100%; background: var(--green); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+    .stat {
+      position: relative;
+      padding: 20px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .stat::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--green); }
+    .stat.blue::before { background: var(--blue); }
+    .stat.orange::before { background: var(--orange); }
+    .stat.purple::before { background: var(--purple); }
+    .stat .stat-icon { display: grid; width: 34px; height: 34px; place-items: center; margin-bottom: 14px; color: var(--green-dark); background: var(--mint); border-radius: 10px; }
+    .stat.blue .stat-icon { color: #3a5ea8; background: #dbe8fb; }
+    .stat.orange .stat-icon { color: #b06f22; background: #fdebd3; }
+    .stat.purple .stat-icon { color: #6b57b8; background: #e9e2fb; }
+    .stat .stat-icon svg { width: 17px; height: 17px; }
+    .stat > span { display: block; color: var(--ink-soft); font-size: 12px; font-weight: 600; }
+    .stat strong { display: block; margin: 6px 0 4px; font-family: "Space Grotesk", sans-serif; font-size: 26px; letter-spacing: -0.04em; }
+    .stat-row { display: flex; justify-content: space-between; color: var(--ink-soft); font-size: 11px; }
+    .positive { color: var(--green); font-weight: 700; }
+    .progress { height: 6px; margin-top: 12px; background: #e7efe9; border-radius: 20px; overflow: hidden; }
+    .progress span { display: block; height: 100%; background: var(--green); border-radius: 20px; }
     .blue .progress span { background: var(--blue); }
     .orange .progress span { background: var(--orange); }
     .purple .progress span { background: var(--purple); }
 
-    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+    .card-header h2 { margin: 0; font-family: "Space Grotesk", sans-serif; font-size: 18px; letter-spacing: -0.04em; }
+    .card-header .eyebrow { margin-bottom: 4px; }
+    .card-link { flex-shrink: 0; color: var(--green); font-size: 12px; font-weight: 700; }
+    .card-link:hover { color: var(--green-dark); }
 
-    .card-header { display: flex; justify-content: space-between; margin-bottom: 22px; }
-
-    .fundraising { display: flex; align-items: center; gap: 35px; }
-
+    .fundraising { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
     .donut {
-      width: 130px;
-      height: 130px;
+      width: 128px;
+      height: 128px;
+      flex-shrink: 0;
       display: grid;
       place-items: center;
       border-radius: 50%;
       background: conic-gradient(var(--green) 0 54%, var(--blue) 54% 85%, var(--orange) 85%);
-      flex-shrink: 0;
     }
-
     .donut-inner {
-      width: 88px;
-      height: 88px;
+      width: 86px;
+      height: 86px;
       display: grid;
       place-items: center;
       align-content: center;
-      background: white;
+      background: var(--paper);
       border-radius: 50%;
       text-align: center;
     }
+    .donut-inner strong { font-family: "Space Grotesk", sans-serif; font-size: 15px; }
+    .donut-inner small { color: var(--ink-soft); font-size: 10px; }
+    .legend { display: grid; gap: 13px; color: var(--ink-soft); font-size: 12px; }
+    .legend b { display: block; color: var(--ink); margin-top: 3px; font-size: 14px; }
 
-    .donut-inner strong { font-size: 16px; }
-    .donut-inner small { color: var(--muted); }
-
-    .legend { display: grid; gap: 14px; color: var(--muted); font-size: 12px; }
-    .legend b { display: block; color: var(--ink); margin-top: 4px; }
-
-    .tasks { display: grid; gap: 8px; }
-
-    .task { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eef2f1; }
-
-    .task-check {
-      width: 20px;
-      height: 20px;
-      display: grid;
-      place-items: center;
-      border: 1px solid #cbd6d2;
-      border-radius: 50%;
-      flex-shrink: 0;
+    .tasks { display: grid; }
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 6px;
+      background: none;
+      border: 0;
+      border-bottom: 1px solid #eef2f1;
+      text-align: left;
     }
-
-    .task.done .task-check { background: var(--green); color: white; border-color: var(--green); }
-
+    .task:last-child { border-bottom: 0; }
+    .task-check {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      place-items: center;
+      border: 1.5px solid #cbd6d2;
+      border-radius: 50%;
+      color: transparent;
+      transition: 150ms ease;
+    }
+    .task-check svg { width: 12px; height: 12px; }
+    .task.done .task-check { background: var(--green); border-color: var(--green); color: var(--paper); }
     .task-content { flex: 1; }
-    .task-content small { display: block; color: var(--muted); margin-top: 4px; }
+    .task-content strong { display: block; font-size: 14px; }
+    .task-content small { display: block; margin-top: 3px; color: var(--ink-soft); font-size: 12px; }
 
-    .ledger { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .ledger th, .ledger td { padding: 14px 8px; border-bottom: 1px solid #eef2f1; text-align: left; }
-    .ledger th { color: var(--muted); font-size: 10px; }
-    .income { color: var(--green); font-weight: bold; }
+    table.ledger { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ledger th { padding: 8px; color: var(--ink-soft); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-align: left; }
+    .ledger td { padding: 13px 8px; border-top: 1px solid #eef2f1; }
+    .ledger td:first-child { font-weight: 600; }
+    .income { color: var(--green); font-weight: 700; }
 
-    .team-progress { margin-top: 25px; }
+    .team-progress { margin-top: 22px; }
+    .team-people { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .team-people strong { font-family: "Space Grotesk", sans-serif; font-size: 20px; letter-spacing: -0.03em; }
+    .team-people p { margin: 0; color: var(--ink-soft); font-size: 12px; }
+
+    .edit-btn {
+      display: inline-grid;
+      width: 26px;
+      height: 26px;
+      place-items: center;
+      color: var(--ink-soft);
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      vertical-align: middle;
+    }
+    .edit-btn svg { width: 13px; height: 13px; }
+    .edit-btn:hover { color: var(--green-dark); border-color: var(--green); }
 
     .toast {
       position: fixed;
-      right: 25px;
-      bottom: 25px;
-      padding: 13px 18px;
-      color: white;
-      background: #20313a;
-      border-radius: 8px;
+      right: 24px;
+      bottom: 24px;
+      z-index: 10;
+      padding: 13px 17px;
+      color: var(--paper);
+      background: var(--ink);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
       opacity: 0;
       transform: translateY(10px);
-      transition: 0.25s;
-      z-index: 10;
+      transition: 180ms ease;
+      pointer-events: none;
+      font-size: 13px;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
 
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       aside { display: none; }
       main { margin-left: 0; }
-      .stats, .grid { grid-template-columns: 1fr 1fr; }
-      .content { padding: 25px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .grid { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 600px) {
-      header { padding: 0 18px; }
-      .content { padding: 20px 15px; }
+      .topbar { flex-direction: column; align-items: flex-start; }
       .welcome { display: block; }
-      .countdown { margin-top: 20px; }
+      .countdown { margin-top: 18px; }
       .stats, .grid { grid-template-columns: 1fr; }
-      .fundraising { flex-direction: column; }
-      .actions .secondary { display: none; }
+      .content { padding-bottom: 50px; }
+      .actions .button-secondary { display: none; }
     }
   </style>
 </head>
@@ -256,99 +335,90 @@
 <body>
   <div class="layout">
     <aside>
-      <div class="logo">
-        <div class="logo-icon"><i data-lucide="tent"></i></div>
+      <a class="brand" href="../index.html">
+        <span class="brand-mark"><i data-lucide="tent"></i></span>
         USFP
-      </div>
+      </a>
 
-      <div class="trip">
+      <div class="camp-card">
         <small>ACTIVE CAMP</small>
         <strong>Kandersteg 2026</strong>
-        <br>
-        <small>12–19 July · Switzerland</small>
+        <span>12–19 July · Switzerland</span>
       </div>
 
+      <p class="side-label">CAMP</p>
       <nav>
-        <a class="active" href="#overview">◈ Overview</a>
-        <a href="#fundraising">↗ Fundraising</a>
-        <a href="#plans">☷ Trip plans</a>
-        <a href="#income">£ Income & costs</a>
-        <a href="#team">♧ Scouts & team</a>
+        <a class="active" href="#overview"><i data-lucide="layout-dashboard"></i>Overview</a>
+        <a href="#fundraising"><i data-lucide="piggy-bank"></i>Fundraising</a>
+        <a href="#plans"><i data-lucide="clipboard-list"></i>Camp plans</a>
+        <a href="#income"><i data-lucide="receipt"></i>Income & costs</a>
+        <a href="#team"><i data-lucide="users"></i>Scouts & team</a>
       </nav>
 
       <div class="profile">
         <div class="avatar" id="avatar">SC</div>
         <div>
           <strong id="profileName">Parent</strong>
-          <div class="muted">Parent account</div>
+          <span>Parent account</span>
         </div>
       </div>
     </aside>
 
     <main>
-      <header>
-        <strong>Camps / Kandersteg 2026</strong>
-
-        <div class="actions">
-          <button class="button ghost" id="signOutBtn">Sign out</button>
-          <button class="button secondary" id="shareBtn">↗ Share camp</button>
-          <button class="button primary" id="updateBtn">＋ Add update</button>
+      <div class="topbar">
+        <div class="crumb">Camps / <b>Kandersteg 2026</b></div>
+        <div class="topbar-actions">
+          <button class="button button-ghost" id="signOutBtn" type="button">Sign out</button>
+          <button class="button button-secondary" id="shareBtn" type="button"><i data-lucide="share-2"></i>Share camp</button>
+          <button class="button button-primary" id="updateBtn" type="button"><i data-lucide="plus"></i>Add update</button>
         </div>
-      </header>
+      </div>
 
       <section class="content" id="overview">
         <div class="welcome">
           <div>
             <p class="eyebrow" id="todayLine">TODAY</p>
-            <h1 id="greeting">Good morning</h1>
-            <p class="muted">Here’s how your Scout’s Kandersteg camp is shaping up.</p>
+            <h1 id="greeting">Good day</h1>
+            <p>Here’s how your Scout’s Kandersteg camp is shaping up.</p>
           </div>
 
           <div class="countdown">
             <small>CAMP COUNTDOWN</small>
             <strong id="countdownDays">—</strong>
-            <small>until we set off</small>
+            <span>until we set off</span>
           </div>
         </div>
 
         <div class="stats">
           <div class="card stat">
-            <span class="muted">Fundraising progress</span>
-            <strong>£4,860</strong>
-            <div class="stat-row">
-              <span>of £8,000 target</span>
-              <span class="positive">60.8%</span>
-            </div>
+            <div class="stat-icon"><i data-lucide="target"></i></div>
+            <span>Fundraising progress</span>
+            <strong data-edit="fundraising">£4,860</strong>
+            <div class="stat-row"><span>of £8,000 target</span><span class="positive">60.8%</span></div>
             <div class="progress"><span style="width:60.8%"></span></div>
           </div>
 
           <div class="card stat blue">
-            <span class="muted">Confirmed income</span>
-            <strong>£6,250</strong>
-            <div class="stat-row">
-              <span>8 income streams</span>
-              <span class="positive">+£1,400</span>
-            </div>
+            <div class="stat-icon"><i data-lucide="banknote"></i></div>
+            <span>Confirmed income</span>
+            <strong data-edit="income">£6,250</strong>
+            <div class="stat-row"><span>8 income streams</span><span class="positive">+£1,400</span></div>
             <div class="progress"><span style="width:75%"></span></div>
           </div>
 
           <div class="card stat orange">
-            <span class="muted">Camp budget</span>
-            <strong>£12,480</strong>
-            <div class="stat-row">
-              <span>planned spend</span>
-              <span>£6,230 left</span>
-            </div>
+            <div class="stat-icon"><i data-lucide="wallet"></i></div>
+            <span>Camp budget</span>
+            <strong data-edit="budget">£12,480</strong>
+            <div class="stat-row"><span>planned spend</span><span>£6,230 left</span></div>
             <div class="progress"><span style="width:50%"></span></div>
           </div>
 
           <div class="card stat purple">
-            <span class="muted">Planning status</span>
-            <strong>72%</strong>
-            <div class="stat-row">
-              <span>11 of 15 tasks done</span>
-              <span class="positive">On track</span>
-            </div>
+            <div class="stat-icon"><i data-lucide="list-checks"></i></div>
+            <span>Planning status</span>
+            <strong data-edit="planning">72%</strong>
+            <div class="stat-row"><span>11 of 15 tasks done</span><span class="positive">On track</span></div>
             <div class="progress"><span style="width:72%"></span></div>
           </div>
         </div>
@@ -360,9 +430,8 @@
                 <p class="eyebrow">MONEY RAISED</p>
                 <h2>Fundraising overview</h2>
               </div>
-              <span class="positive">View all ↗</span>
+              <a class="card-link" href="#fundraising">View all ↗</a>
             </div>
-
             <div class="fundraising">
               <div class="donut">
                 <div class="donut-inner">
@@ -370,7 +439,6 @@
                   <small>raised</small>
                 </div>
               </div>
-
               <div class="legend">
                 <span>● Events <b>£2,640</b></span>
                 <span>● Grants <b>£1,500</b></span>
@@ -385,41 +453,25 @@
                 <p class="eyebrow">UP NEXT</p>
                 <h2>Camp plans</h2>
               </div>
-              <span class="positive">Manage ↗</span>
+              <a class="card-link" href="#plans">Manage ↗</a>
             </div>
-
-            <div class="tasks">
-              <div class="task done">
-                <span class="task-check">✓</span>
-                <div class="task-content">
-                  <strong>Confirm campsite booking</strong>
-                  <small>Completed 08 Nov</small>
-                </div>
-              </div>
-
-              <div class="task done">
-                <span class="task-check">✓</span>
-                <div class="task-content">
-                  <strong>Submit grant application</strong>
-                  <small>Completed 04 Nov</small>
-                </div>
-              </div>
-
-              <div class="task">
-                <span class="task-check"></span>
-                <div class="task-content">
-                  <strong>Collect medical forms</strong>
-                  <small>Due 18 Nov · 14 remaining</small>
-                </div>
-              </div>
-
-              <div class="task">
-                <span class="task-check"></span>
-                <div class="task-content">
-                  <strong>Book group travel insurance</strong>
-                  <small>Due 25 Nov</small>
-                </div>
-              </div>
+            <div class="tasks" id="taskList">
+              <button class="task done" type="button" data-task="campsite">
+                <span class="task-check"><i data-lucide="check"></i></span>
+                <span class="task-content"><strong>Confirm campsite booking</strong><small>Completed 08 Nov</small></span>
+              </button>
+              <button class="task done" type="button" data-task="grant">
+                <span class="task-check"><i data-lucide="check"></i></span>
+                <span class="task-content"><strong>Submit grant application</strong><small>Completed 04 Nov</small></span>
+              </button>
+              <button class="task" type="button" data-task="medical">
+                <span class="task-check"><i data-lucide="check"></i></span>
+                <span class="task-content"><strong>Collect medical forms</strong><small>Due 18 Nov · 14 remaining</small></span>
+              </button>
+              <button class="task" type="button" data-task="insurance">
+                <span class="task-check"><i data-lucide="check"></i></span>
+                <span class="task-content"><strong>Book group travel insurance</strong><small>Due 25 Nov</small></span>
+              </button>
             </div>
           </section>
         </div>
@@ -431,43 +483,20 @@
                 <p class="eyebrow">LATEST ACTIVITY</p>
                 <h2>Income & costs</h2>
               </div>
-              <span class="positive">Open ledger ↗</span>
+              <div style="display:flex;gap:10px;align-items:center;">
+                <button class="button button-secondary" id="addEntryBtn" type="button" style="padding:8px 13px;font-size:12px;"><i data-lucide="plus"></i>Add entry</button>
+                <a class="card-link" href="#income">Open ledger ↗</a>
+              </div>
             </div>
-
             <table class="ledger">
               <thead>
-                <tr>
-                  <th>DESCRIPTION</th>
-                  <th>TYPE</th>
-                  <th>DATE</th>
-                  <th>AMOUNT</th>
-                </tr>
+                <tr><th>DESCRIPTION</th><th>TYPE</th><th>DATE</th><th>AMOUNT</th><th></th></tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Autumn quiz night</td>
-                  <td>Income</td>
-                  <td>08 Nov 2026</td>
-                  <td class="income">+£1,240</td>
-                </tr>
-                <tr>
-                  <td>Kandersteg campsite</td>
-                  <td>Cost</td>
-                  <td>06 Nov 2026</td>
-                  <td>−£1,850</td>
-                </tr>
-                <tr>
-                  <td>Local community grant</td>
-                  <td>Income</td>
-                  <td>04 Nov 2026</td>
-                  <td class="income">+£1,500</td>
-                </tr>
-                <tr>
-                  <td>Group travel insurance</td>
-                  <td>Cost</td>
-                  <td>01 Nov 2026</td>
-                  <td>−£420</td>
-                </tr>
+              <tbody id="ledgerBody">
+                <tr data-entry="quiz"><td>Autumn quiz night</td><td>Income</td><td>08 Nov 2026</td><td class="income">+£1,240</td><td><button class="edit-btn" type="button" data-edit-entry="quiz" title="Edit"><i data-lucide="pencil"></i></button></td></tr>
+                <tr data-entry="campsite"><td>Kandersteg campsite</td><td>Cost</td><td>06 Nov 2026</td><td>−£1,850</td><td><button class="edit-btn" type="button" data-edit-entry="campsite" title="Edit"><i data-lucide="pencil"></i></button></td></tr>
+                <tr data-entry="grant"><td>Local community grant</td><td>Income</td><td>04 Nov 2026</td><td class="income">+£1,500</td><td><button class="edit-btn" type="button" data-edit-entry="grant" title="Edit"><i data-lucide="pencil"></i></button></td></tr>
+                <tr data-entry="insurance"><td>Group travel insurance</td><td>Cost</td><td>01 Nov 2026</td><td>−£420</td><td><button class="edit-btn" type="button" data-edit-entry="insurance" title="Edit"><i data-lucide="pencil"></i></button></td></tr>
               </tbody>
             </table>
           </section>
@@ -478,21 +507,16 @@
                 <p class="eyebrow">THE CREW</p>
                 <h2>Scouts & team</h2>
               </div>
-              <span class="positive">View team ↗</span>
+              <a class="card-link" href="#team">View team ↗</a>
             </div>
-
-            <strong>16 people</strong>
-            <p class="muted">12 scouts · 4 leaders</p>
-
+            <div class="team-people">
+              <strong>16 people</strong>
+              <p>12 scouts · 4 leaders</p>
+            </div>
             <div class="team-progress">
-              <div class="stat-row">
-                <span>Forms collected</span>
-                <strong>18 / 24</strong>
-              </div>
-              <div class="progress">
-                <span style="width:75%"></span>
-              </div>
-              <small class="muted">6 outstanding · next reminder Friday</small>
+              <div class="stat-row"><span>Forms collected</span><strong>18 / 24</strong></div>
+              <div class="progress"><span style="width:75%"></span></div>
+              <small style="color:var(--ink-soft);font-size:12px;">6 outstanding · next reminder Friday</small>
             </div>
           </section>
         </div>
@@ -553,7 +577,7 @@
       }
 
       const name = firstName(session.user);
-      document.getElementById("greeting").textContent = `Good day, ${name} ✦`;
+      document.getElementById("greeting").textContent = `Good day, ${name}`;
       document.getElementById("profileName").textContent = name;
       document.getElementById("avatar").textContent = initials(name);
 
@@ -561,8 +585,7 @@
       const days = Math.max(0, Math.ceil((departure - new Date()) / 86400000));
       document.getElementById("countdownDays").textContent = `${days} days`;
 
-      const now = new Date();
-      document.getElementById("todayLine").textContent = now.toLocaleDateString("en-GB", {
+      document.getElementById("todayLine").textContent = new Date().toLocaleDateString("en-GB", {
         weekday: "long", day: "numeric", month: "long", year: "numeric",
       }).toUpperCase();
     }
@@ -585,14 +608,120 @@
       window.location.href = "../../login.html";
     });
 
-    document.querySelectorAll(".task:not(.done)").forEach(task => {
+    document.querySelectorAll(".task").forEach(task => {
       task.addEventListener("click", () => {
-        task.classList.add("done");
-        task.querySelector(".task-check").textContent = "✓";
-        task.querySelector("small").textContent = "Completed just now";
-        showToast("Task marked as complete");
+        task.classList.toggle("done");
+        showToast(task.classList.contains("done") ? "Task marked as complete" : "Task reopened");
       });
     });
+
+    // ---- Parent editing (shared camp data) ----
+    const OVERRIDES_KEY = "usfp_camp_overrides";
+    let overrides = {};
+    try { overrides = JSON.parse(localStorage.getItem(OVERRIDES_KEY) || "{}"); } catch { overrides = {}; }
+
+    function saveOverrides() {
+      localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides));
+    }
+
+    function applyOverrides() {
+      document.querySelectorAll("[data-edit]").forEach(el => {
+        const key = el.dataset.edit;
+        if (overrides[key] !== undefined) el.textContent = overrides[key];
+      });
+      document.querySelectorAll("[data-entry]").forEach(row => {
+        const key = row.dataset.entry;
+        if (overrides[`entry_${key}`]) {
+          const [desc, type, amount] = overrides[`entry_${key}`];
+          const cells = row.querySelectorAll("td");
+          cells[0].textContent = desc;
+          cells[1].textContent = type;
+          const amt = cells[3];
+          amt.textContent = amount;
+          amt.className = type === "Income" ? "income" : "";
+        }
+      });
+      Object.keys(overrides).forEach(key => {
+        if (!key.startsWith("entry_custom_") || document.querySelector(`[data-entry="${key.slice(6)}"]`)) return;
+        const [desc, type, amount] = overrides[key];
+        const row = document.createElement("tr");
+        row.dataset.entry = key.slice(6);
+        row.innerHTML = `<td></td><td></td><td>${new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</td><td></td><td><button class="edit-btn" type="button" data-edit-entry="${row.dataset.entry}" title="Edit"><i data-lucide="pencil"></i></button></td>`;
+        const cells = row.querySelectorAll("td");
+        cells[0].textContent = desc;
+        cells[1].textContent = type;
+        cells[3].textContent = amount;
+        cells[3].className = type === "Income" ? "income" : "";
+        document.getElementById("ledgerBody").appendChild(row);
+        wireEntryEdit(row.querySelector("[data-edit-entry]"));
+      });
+      lucide.createIcons();
+    }
+
+    document.querySelectorAll("[data-edit]").forEach(el => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "edit-btn";
+      btn.title = "Edit";
+      btn.innerHTML = '<i data-lucide="pencil"></i>';
+      btn.addEventListener("click", () => {
+        const key = el.dataset.edit;
+        const next = window.prompt("New value:", el.textContent);
+        if (next === null) return;
+        overrides[key] = next.trim() || el.textContent;
+        el.textContent = overrides[key];
+        saveOverrides();
+        showToast("Update saved — visible to your Scout");
+      });
+      el.insertAdjacentElement("afterend", btn);
+    });
+
+    function wireEntryEdit(btn) {
+      btn.addEventListener("click", () => {
+        const row = btn.closest("[data-entry]");
+        const cells = row.querySelectorAll("td");
+        const next = window.prompt("Edit entry — description, type (Income/Cost), amount:",
+          `${cells[0].textContent}, ${cells[1].textContent}, ${cells[3].textContent.replace("+", "").replace("−", "-")}`);
+        if (next === null) return;
+        const [desc, type, amount] = next.split(",").map(s => s.trim());
+        if (!desc || !amount) { showToast("Enter description, type and amount"); return; }
+        const entryType = /cost/i.test(type) ? "Cost" : "Income";
+        overrides[`entry_${row.dataset.entry}`] = [desc, entryType, amount];
+        cells[0].textContent = desc;
+        cells[1].textContent = entryType;
+        cells[3].textContent = amount;
+        cells[3].className = entryType === "Income" ? "income" : "";
+        saveOverrides();
+        showToast("Ledger entry updated");
+      });
+    }
+
+    document.querySelectorAll("[data-edit-entry]").forEach(wireEntryEdit);
+
+    document.getElementById("addEntryBtn").addEventListener("click", () => {
+      const next = window.prompt("New entry — description, type (Income/Cost), amount:", "Bake sale, Income, £350");
+      if (next === null) return;
+      const [desc, type, amount] = next.split(",").map(s => s.trim());
+      if (!desc || !amount) { showToast("Enter description, type and amount"); return; }
+      const entryType = /cost/i.test(type) ? "Cost" : "Income";
+      const row = document.createElement("tr");
+      row.dataset.entry = `custom_${Date.now()}`;
+      row.innerHTML = `<td></td><td></td><td>${new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</td><td></td><td><button class="edit-btn" type="button" data-edit-entry="${row.dataset.entry}" title="Edit"><i data-lucide="pencil"></i></button></td>`;
+      const cells = row.querySelectorAll("td");
+      cells[0].textContent = desc;
+      cells[1].textContent = entryType;
+      cells[3].textContent = amount;
+      cells[3].className = entryType === "Income" ? "income" : "";
+      document.getElementById("ledgerBody").appendChild(row);
+      overrides[`entry_${row.dataset.entry}`] = [desc, entryType, amount];
+      saveOverrides();
+      lucide.createIcons();
+      wireEntryEdit(row.querySelector("[data-edit-entry]"));
+      showToast("Entry added to ledger");
+    });
+
+    applyOverrides();
+    lucide.createIcons();
 
     init();
   </script>
